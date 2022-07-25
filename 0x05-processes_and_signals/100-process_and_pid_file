@@ -1,22 +1,12 @@
 #!/usr/bin/env bash
-# prints infinite loop
+# why you no love me
 
-i=0
+trap "echo I hate the kill command & rm /var/run/myscript.pid & exit" SIGTERM
+trap "echo Y U no love me?!" SIGINT
+trap 'rm /var/run/myscript.pid & exit' SIGQUIT
 
 echo $$ > /var/run/myscript.pid
-
-killit()
-{
-	echo "I hate the kill command"
-	rm /var/run/myscript.pid
-}
-
-trap "rm /var/run/myscript.pid" SIGQUIT
-trap killit SIGTERM
-trap "echo Y U no love me?!" SIGINT
-
-while ((i < 1))
-do
-	echo "To infinity and beyond"
-	sleep 2
+while true; do
+    echo To infinity and beyond
+    sleep 2
 done
