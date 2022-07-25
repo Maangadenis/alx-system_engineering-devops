@@ -1,12 +1,21 @@
 #!/usr/bin/env bash
-# Create a .pid file on /var/run and this process can be killed (Have special interactions)
-trap "echo \"Y U no love me?!\"; exit" SIGINT
-trap "sudo rm /var/run/myscript.pid; exit" SIGQUIT
-trap "echo \"I hate the kill command\"; sudo rm /var/run/myscript.pid; exit" SIGTERM
+# prints infinite loop
 
-echo "$$" > /var/run/myscript.pid
+i=0
 
-while true
+echo $$ > /var/run/myscript.pid
+
+killit()
+{
+	echo "I hate the kill command"
+	rm /var/run/myscript.pid
+}
+
+trap "rm /var/run/myscript.pid" SIGQUIT
+trap killit SIGTERM
+trap "echo Y U no love me?!" SIGINT
+
+while ((i < 1))
 do
 	echo "To infinity and beyond"
 	sleep 2
